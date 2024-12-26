@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YOKAI SMP</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            color: white;
+            overflow-x: hidden;
+            height: 100%;
+            background-color: #7EC850; /* Warna latar belakang */
+            background-image: url('Screenshot_2024_1019_100028.jpg'); /* Latar belakang */
+            background-size: cover;
+            background-position: center;
+        }
+
+        header {
+            display: flex;
+            justify-content: flex-start; /* Ikon hamburger di kiri */
+            align-items: center;
+            padding: 10px 20px;
+            position: fixed;
+            width: 100%;
+            z-index: 1010;
+            opacity: 0;
+            animation: fadeIn 1s forwards 0.5s; /* Animasi header */
+        }
+
+        .menu-icon {
+            cursor: pointer;
+            width: 30px;
+            height: 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            z-index: 1100;
+            transition: transform 0.3s ease;
+        }
+
+        .menu-icon div {
+            width: 30px;
+            height: 4px;
+            background-color: white;
+            transition: 0.4s;
+        }
+
+        /* Animasi putar pada menu-icon */
+        .menu-icon.rotate {
+            animation: rotate 0.5s ease forwards; /* Mengatur durasi dan jenis animasi */
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        nav {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* Menu dari atas ke bawah */
+            align-items: center;
+            position: fixed;
+            top: -100%;
+            left: 0; /* Menu berada di kiri */
+            width: 100%; /* Full width */
+            height: auto; /* Mengatur tinggi otomatis */
+            background-color: rgba(0, 0, 0, 0.9);
+            transition: top 0.5s ease;
+            z-index: 1000;
+            padding-top: 60px; /* Memberi ruang di atas untuk menu */
+            gap: 10px; /* Menambah jarak antar menu */
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.2em; /* Ukuran font dikurangi */
+            font-weight: bold;
+            transition: color 0.3s ease;
+            padding: 10px; /* Menambah padding untuk mudah diklik */
+            width: 80%; /* Lebar menu mengikuti teks */
+            text-align: center; /* Teks rata tengah */
+            opacity: 0; /* Awalnya tidak terlihat */
+            animation: fadeIn 1s forwards; /* Animasi teks menu */
+        }
+
+        nav a:nth-child(1) {
+            animation-delay: 1.5s; /* Delay untuk menu 1 */
+        }
+
+        nav a:nth-child(2) {
+            animation-delay: 1.6s; /* Delay untuk menu 2 */
+        }
+
+        nav a:nth-child(3) {
+            animation-delay: 1.7s; /* Delay untuk menu 3 */
+        }
+
+        nav a:nth-child(4) {
+            animation-delay: 1.8s; /* Delay untuk menu 4 */
+        }
+
+        nav.active {
+            top: 0; /* Menampilkan menu */
+        }
+
+        .change .bar1 {
+            transform: rotate(-45deg) translate(-5px, 6px);
+            background-color: #ff4444;
+        }
+
+        .change .bar2 {
+            opacity: 0;
+        }
+
+        .change .bar3 {
+            transform: rotate(45deg) translate(-5px, -6px);
+            background-color: #ff4444;
+        }
+        
+        .description-1 {
+          text-align: center;
+          opacity: 0;
+          animation: fadeIn 1s forwards 2s;
+        }
+
+        .description {
+            font-size: 0.8em;
+            font-weight: bold;
+            margin: 10px auto;
+            color: #ddd;
+            text-align: center;
+            position: relative;
+            display: flex;
+            opacity: 0; /* Awalnya tidak terlihat */
+            animation: fadeIn 1s forwards 2s; /* Animasi deskripsi */
+            z-index: 100;
+        }
+
+        .ip-address, .port {
+            font-size: 0.9em;
+            font-weight: bold;
+            color: white;
+            text-align: center;
+            z-index: 100;
+            opacity: 0; /* Awalnya tidak terlihat */
+            animation: fadeIn 1s forwards 2.5s; /* Animasi IP dan port */
+        }
+
+        .ip-port {
+            margin-top: 50px;
+        }
+
+        .platform-icons {
+            text-align: center;
+            margin-top: 10px;
+            opacity: 0; /* Awalnya tidak terlihat */
+            animation: fadeIn 1s forwards 3s; /* Animasi platform icons */
+        }
+
+        .platform-icons i {
+            font-size: 1.3em;
+            margin: 0 10px;
+            color: white;
+        }
+
+        .buttons {
+            margin-top: 40px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            opacity: 0; /* Awalnya tidak terlihat */
+            animation: fadeIn 1s forwards 3.5s; /* Animasi tombol */
+        }
+
+        .button {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            color: white;
+            background-color: #444;
+            border: 2px solid white;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #ff4444;
+            transform: scale(1.1);
+        }
+
+        .player-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: 100px;
+            text-align: center;
+            opacity: 0; /* Awalnya tidak terlihat */
+            animation: fadeIn 1s forwards 4s; /* Animasi player info */
+        }
+
+        .player-count {
+            margin: 20px;
+            font-size: 1.5em;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 10px 20px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #fff; /* Warna awesome font */
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .server-icon {
+            display: block;
+            margin: 50px auto;
+            width: 150px;
+            height: auto;
+            opacity: 0; /* Awalnya tidak terlihat */
+            animation: fadeIn 1s forwards 1s; /* Animasi foto server */
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="menu-icon" onclick="toggleMenu(this)">
+            <div class="bar1"></div>
+            <div class="bar2"></div>
+            <div class="bar3"></div>
+        </div>
+    </header>
+
+    <nav id="menu">
+        <a href="#">Home</a>
+        <a href="store.html">Store</a>
+        <a href="fitur.html">Fitur</a>
+        <a href="wa.me/6289676753517">Contact</a>
+    </nav>
+
+    <img src="server-icon.png" alt="Server Icon" class="server-icon">
+    <div class="description-1">
+      <h1>YOKAI SMP</h1>
+    </div>
+
+    <div class="description">
+        Server Survival Indonesia Dengan Fitur Yang Banyak, Senjata Custom, Dan Lain Sebagainya
+    </div>
+
+    <div class="ip-port">
+        <div class="ip-address">
+            <i class="fas fa-globe"></i> Alamat IP: play.yokaimc.my.id
+        </div>
+        <div class="port">
+            <i class="fas fa-plug"></i> Port: 19132 (default)
+        </div>
+    </div>
+
+    <div class="platform-icons">
+        <i class="fab fa-playstation"></i>
+        <i class="fab fa-xbox"></i>
+        <i class="fab fa-windows"></i>
+        <i class="fab fa-android"></i>
+    </div>
+
+    <div class="buttons">
+        <a href="store.html" class="button">Store</a>
+        <a href="minecraft://?addExternalServer=Yokai|play.yokaimc.my.id:19132" class="button">Play Now</a>
+        <a href="vote.yokaimc.my.id" class="button">Vote</a>
+    </div>
+<div class="player-info">
+    <div id="playerDetails">
+        <i class="fas fa-users"></i> Jumlah Pemain Online: <span id="playerCount">0</span>
+        <div id="playerList" style="margin-top: 20px; font-size: 1em; color: #fff;">
+            <strong>Daftar Pemain Online:</strong>
+            <table id="onlinePlayersTable" style="width: 100%; margin-top: 10px; border-collapse: collapse; text-align: center;">
+                <thead>
+                    <tr>
+                        <th style="border: 2px solid white; padding: 10px; background-color: #333; color: #fff;">Pemain</th>
+                        <th style="border: 2px solid white; padding: 10px; background-color: #333; color: #fff;">Playtime</th>
+                    </tr>
+                </thead>
+                <tbody id="onlinePlayers" style="background-color: rgba(255, 255, 255, 0.1);"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+    </div>
+
+    <script>
+        function toggleMenu(x) {
+            x.classList.toggle("change");
+            const menu = document.getElementById("menu");
+            menu.classList.toggle("active");
+            x.classList.toggle("rotate"); // Menambahkan kelas rotate saat menu dibuka
+        }
+
+        // Mengambil jumlah pemain dari API
+async function getPlayerCount() {
+    try {
+        const response = await fetch('https://api.mcsrvstat.us/2/play.yokaimc.my.id:19132'); // API untuk server Minecraft
+        const data = await response.json();
+
+        const playerCountElement = document.getElementById('playerCount');
+        const onlinePlayersTable = document.getElementById('onlinePlayers');
+
+        if (data.online) {
+            const playerCount = data.players.online;
+            playerCountElement.innerText = playerCount;
+
+            // Kosongkan tabel sebelum mengisi ulang
+            onlinePlayersTable.innerHTML = '';
+
+            // Ambil daftar pemain dan playtime (jika tersedia)
+            const playerList = data.players.list || [];
+            const playtimes = data.players.ping || {}; // Asumsikan playtime tersedia di API
+
+            if (playerList.length > 0) {
+                playerList.forEach(player => {
+                    const row = document.createElement('tr');
+
+                    // Kolom Pemain (Head + Nama)
+                    const playerCell = document.createElement('td');
+                    playerCell.style.border = '2px solid white';
+                    playerCell.style.padding = '10px';
+                    playerCell.style.display = 'flex';
+                    playerCell.style.alignItems = 'center';
+                    playerCell.style.justifyContent = 'left';
+                    playerCell.style.gap = '10px';
+
+                    const playerHead = document.createElement('img');
+                    playerHead.src = `https://mc-heads.net/avatar/${player}`;
+                    playerHead.alt = `${player}'s head`;
+                    playerHead.style.width = '32px';
+                    playerHead.style.height = '32px';
+                    playerHead.style.borderRadius = '4px';
+
+                    const playerName = document.createElement('span');
+                    playerName.textContent = player;
+                    playerName.style.fontWeight = 'bold';
+                    playerName.style.color = '#fff';
+
+                    playerCell.appendChild(playerHead);
+                    playerCell.appendChild(playerName);
+
+                    // Kolom Playtime
+                    const playtimeCell = document.createElement('td');
+                    playtimeCell.style.border = '2px solid white';
+                    playtimeCell.style.padding = '10px';
+                    playtimeCell.textContent = playtimes[player] || 'Tidak tersedia';
+
+                    row.appendChild(playerCell);
+                    row.appendChild(playtimeCell);
+                    onlinePlayersTable.appendChild(row);
+                });
+            } else {
+                const emptyRow = document.createElement('tr');
+                const emptyCell = document.createElement('td');
+                emptyCell.colSpan = 2;
+                emptyCell.textContent = 'Tidak ada pemain online';
+                emptyCell.style.padding = '10px';
+                emptyCell.style.border = '2px solid white';
+                emptyCell.style.color = '#fff';
+                emptyRow.appendChild(emptyCell);
+                onlinePlayersTable.appendChild(emptyRow);
+            }
+        } else {
+            playerCountElement.innerText = 'Server offline atau data tidak tersedia.';
+            onlinePlayersTable.innerHTML = `
+                <tr>
+                    <td colspan="2" style="padding: 10px; border: 2px solid white; color: #fff;">Tidak ada data pemain</td>
+                </tr>
+            `;
+        }
+    } catch (error) {
+        document.getElementById('playerCount').innerText = 'Gagal memuat jumlah pemain.';
+        document.getElementById('onlinePlayers').innerHTML = `
+            <tr>
+                <td colspan="2" style="padding: 10px; border: 2px solid white; color: #fff;">Gagal memuat data pemain</td>
+            </tr>
+        `;
+    }
+}
+
+// Memperbarui jumlah pemain setiap 3 detik
+setInterval(getPlayerCount, 3000);
+
+// Panggil fungsi untuk mendapatkan jumlah pemain saat halaman dimuat
+window.onload = function () {
+    getPlayerCount();
+};
+    </script>
+</body>
+</html>
